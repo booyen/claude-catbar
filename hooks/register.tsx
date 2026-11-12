@@ -3,6 +3,10 @@ import type { EngineInterface, Register, RenderChildren } from 'claude-code'
 
 import type { Sample, Today, BarLayout, BarLength, BarMode, BarStyle, CatSkin, Mood, Vibe, SaberTheme, CatSettings, Stats, Usage, UsageSource } from '../types'
 
+
+// The SVG namespace: a fixed name every SVG drawing declares so it renders as SVG.
+// It is an identifier, not an address: catbar never connects to it or anywhere else.
+const SVG_NS = 'http://www.w3.org/2000/svg'
 const PANE = 'catbar'
 const TITLE = 'Dancing Cat'
 const SETTINGS_PANE = 'cat-settings'
@@ -833,7 +837,7 @@ const FLOOR = `<g class="floor">
 
 /** The pane's cat: the current mood, its glow circle and a disco floor. */
 function paneCatSvg(m: Mood, skin: Skin, speed: number, isAlert = false): string {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" width="240" height="280">
+  return `<svg xmlns="${SVG_NS}" viewBox="0 0 240 280" width="240" height="280">
 <style>${catCss(speed, skin)}</style>
 ${FLOOR}${moodGroup(m, skin, isAlert)}
 </svg>`
@@ -926,14 +930,14 @@ function saberParts(percent: number, theme: SaberTheme, isFast: boolean): { css:
 /** The saber alone (settings preview), at half its old thickness. */
 function saberSvg(percent: number, theme: SaberTheme, isFast: boolean): string {
   const { css, defs, body } = saberParts(percent, theme, isFast)
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 10 ${SABER_W} 20" width="${SABER_W}" height="10" preserveAspectRatio="none">
+  return `<svg xmlns="${SVG_NS}" viewBox="0 10 ${SABER_W} 20" width="${SABER_W}" height="10" preserveAspectRatio="none">
 <defs>${defs}</defs><style>${css}</style>${body}
 </svg>`
 }
 
 /** The strip's cat alone: every mood stacked, clickable, no background. */
 function stripCatSvg(mood: Mood, skin: Skin, speed: number, isAlert: boolean): string {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 40 200 200" width="${CAT_PX}" height="${CAT_PX}">
+  return `<svg xmlns="${SVG_NS}" viewBox="20 40 200 200" width="${CAT_PX}" height="${CAT_PX}">
 <style>${catCss(speed, skin)}</style>${catLayers(mood, skin, isAlert)}</svg>`
 }
 
@@ -983,7 +987,7 @@ const BARS: Record<BarStyle, { label: string; draw: (p: number, w: number, theme
       const row = iconRow(w, n, filled, (x, full, i) => full
         ? `<g class="${i === filled - 1 ? 'pop' : ''}" style="transform-origin:${x.toFixed(1)}px 9px">${PAW(x, 9, c)}</g>`
         : PAW(x, 9, '#8a8a8a', 0.3))
-      return { width: w, height: 18, source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} 18" width="${w}" height="18"><style>.pop{animation:pop 1.2s ease-in-out infinite}@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}</style>${row}</svg>` }
+      return { width: w, height: 18, source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${w} 18" width="${w}" height="18"><style>.pop{animation:pop 1.2s ease-in-out infinite}@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}</style>${row}</svg>` }
     },
   },
   yarn: {
@@ -991,7 +995,7 @@ const BARS: Record<BarStyle, { label: string; draw: (p: number, w: number, theme
     draw: (p, w) => {
       const end = 8 + ((w - 16) * Math.max(0, Math.min(100, p))) / 100
       const c = p >= 80 ? '#ff4d6d' : '#ff7eb6'
-      return { width: w, height: 18, source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} 18" width="${w}" height="18">
+      return { width: w, height: 18, source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${w} 18" width="${w}" height="18">
 <style>.ball{transform-box:fill-box;transform-origin:center;animation:roll 2s linear infinite}@keyframes roll{to{transform:rotate(360deg)}}</style>
 <path d="M4 9 H${w - 4}" stroke="#8a8a8a" stroke-width="1.5" stroke-dasharray="2 4" opacity=".4"/>
 <path d="M4 9 Q${(end / 4).toFixed(1)} 4 ${(end / 2).toFixed(1)} 9 T${end.toFixed(1)} 9" stroke="${c}" stroke-width="2" fill="none"/>
@@ -1005,7 +1009,7 @@ const BARS: Record<BarStyle, { label: string; draw: (p: number, w: number, theme
       const n = w < 150 ? 5 : 10
       const eaten = Math.round((p / 100) * n)
       const row = iconRow(w, n, eaten, (x, isEaten) => (isEaten ? BONES(x, 9) : FISH(x, 9, '#5ab8ff')))
-      return { width: w, height: 18, source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} 18" width="${w}" height="18">${row}</svg>` }
+      return { width: w, height: 18, source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${w} 18" width="${w}" height="18">${row}</svg>` }
     },
   },
   hearts: {
@@ -1016,14 +1020,14 @@ const BARS: Record<BarStyle, { label: string; draw: (p: number, w: number, theme
       const row = iconRow(w, n, left, (x, full, i) => full
         ? `<g class="${left <= 2 && i < left ? 'beat' : ''}" style="transform-origin:${x.toFixed(1)}px 9px">${HEART(x, 9, '#ff4d6d', '#b0002b')}</g>`
         : HEART(x, 9, 'none', '#8a8a8a'))
-      return { width: w, height: 18, source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} 18" width="${w}" height="18"><style>.beat{animation:beat .8s ease-in-out infinite}@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}</style>${row}</svg>` }
+      return { width: w, height: 18, source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${w} 18" width="${w}" height="18"><style>.beat{animation:beat .8s ease-in-out infinite}@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}</style>${row}</svg>` }
     },
   },
   neon: {
     label: 'Neon tube',
     draw: (p, w) => {
       const fill = Math.max(6, ((w - 4) * Math.max(0, Math.min(100, p))) / 100)
-      return { width: w, height: 12, source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} 12" width="${w}" height="12">
+      return { width: w, height: 12, source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${w} 12" width="${w}" height="12">
 <defs><linearGradient id="ng" x1="0" x2="1"><stop offset="0" stop-color="#00e5ff"/><stop offset=".6" stop-color="#b04dff"/><stop offset="1" stop-color="#ff2bd6"/></linearGradient>
 <filter id="nb" x="-10%" y="-100%" width="120%" height="300%"><feGaussianBlur stdDeviation="2"/></filter>
 <clipPath id="nc"><rect x="2" y="3" width="${fill.toFixed(1)}" height="6" rx="3"/></clipPath></defs>
@@ -1041,7 +1045,7 @@ const BARS: Record<BarStyle, { label: string; draw: (p: number, w: number, theme
       const end = Math.max(10, ((w - 14) * Math.max(0, Math.min(100, p))) / 100)
       const cols = ['#ff4d4d', '#ffa64d', '#ffe14d', '#4dff88', '#4db8ff', '#a64dff']
       const stripes = cols.map((c, i) => `<rect x="0" y="${1 + i * 2}" width="${end.toFixed(1)}" height="2" fill="${c}"/>`).join('')
-      return { width: w, height: 14, source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} 14" width="${w}" height="14">
+      return { width: w, height: 14, source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${w} 14" width="${w}" height="14">
 <style>.wave{animation:wave .5s steps(2) infinite}@keyframes wave{50%{transform:translateY(1px)}}.star{transform-box:fill-box;transform-origin:center;animation:tw 1s ease-in-out infinite alternate}@keyframes tw{from{transform:scale(.8) rotate(0)}to{transform:scale(1.2) rotate(30deg)}}</style>
 <rect x="0" y="1" width="${w - 2}" height="12" rx="3" fill="#8a8a8a" opacity=".12"/>
 <g class="wave">${stripes}</g>
@@ -1101,7 +1105,7 @@ function tilesSvg(tiles: Tile[], fillTo?: number, redraw?: (width: number) => Ba
   return {
     width,
     height: TILE.height,
-    source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${TILE.height}" width="${width}" height="${TILE.height}">
+    source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${width} ${TILE.height}" width="${width}" height="${TILE.height}">
 <style>
   text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
   .tile .bg { fill: rgba(255,255,255,0.06); }
@@ -1139,7 +1143,7 @@ function lineSvg(o: {
     x += textW(o.second.text, LS)
   }
   const width = Math.ceil(x) + 6
-  return { width, height: H, source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${H}" width="${width}" height="${H}">
+  return { width, height: H, source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${width} ${H}" width="${width}" height="${H}">
 <style>text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; } .l { font-size: ${LS}px; fill: #9a9a9a; } .v { font-size: ${VS}px; font-weight: 600; fill: #ececec; }</style>
 ${parts.join('\n')}
 </svg>` }
@@ -1223,7 +1227,7 @@ function lockedBar(frac: number, w: number): BarArt {
   const x0 = 22
   const track = w - x0 - 18
   const fill = Math.max(4, track * f)
-  return { width: w, height: 18, source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} 18" width="${w}" height="18">
+  return { width: w, height: 18, source: `<svg xmlns="${SVG_NS}" viewBox="0 0 ${w} 18" width="${w}" height="18">
 <defs><pattern id="lk" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="8" fill="#7fb6ff" opacity=".55"/></pattern>
 <clipPath id="lkc"><rect x="${x0}" y="6" width="${fill.toFixed(1)}" height="6" rx="3"/></clipPath></defs>
 <style>.lkm{animation:lkm 1.2s linear infinite}@keyframes lkm{to{transform:translateX(11.3px)}}.lb{animation:lb 2s ease-in-out infinite}@keyframes lb{50%{opacity:.6}}</style>
@@ -1273,16 +1277,14 @@ async function smartAlert($: EngineInterface, kind: string, p: number): Promise<
   if (before >= 75 && p < before - 30) {
     alerted[kind] = 0
     const text = `Your ${name} limit has reset. The cat is awake again.`
-    const sent = await $.ui.notify(text, { title: 'Cat bar' }).catch(() => null)
-    if (!sent || !('isSent' in sent) || !sent.isSent) $.ui.toast(text)
+    $.ui.toast(text, { timeoutMs: 8000 })
     return
   }
   for (const level of [100, 90, 75]) {
     if (p >= level && before < level) {
       alerted[kind] = level
       const text = level >= 100 ? `Your ${name} limit is used up. The cat is napping until it resets.` : `Your ${name} usage is at ${Math.round(p)}%.`
-      const sent = await $.ui.notify(text, { title: 'Cat bar' }).catch(() => null)
-      if (!sent || !('isSent' in sent) || !sent.isSent) $.ui.toast(text)
+      $.ui.toast(text, { timeoutMs: 8000 })
       return
     }
   }
@@ -1878,7 +1880,7 @@ export const register: Register = on => {
         {toggle('showForecast', 'Usage forecast', 'When you will hit 100% at your current pace')}
 
         <Text bold>Alerts</Text>
-        {toggle('smartAlerts', 'Smart alerts', 'A notification at 75%, 90%, 100%, and when your limit resets')}
+        {toggle('smartAlerts', 'Smart alerts', 'A message inside Claude Code at 75%, 90%, 100%, and when your limit resets')}
 
         <Box flexDirection="row" gap={1}>
           <Button key="s-reset" onPress={() => setSettings($, DEFAULTS)}>Reset to defaults</Button>

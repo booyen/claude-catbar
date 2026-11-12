@@ -11,7 +11,7 @@ A dancing cat and a usage meter that sit right above your Claude Code chat.
 - **Live usage:** your 5-hour and weekly limits, reset countdown, context used, reply time, model, and a forecast of when you'll hit 100%
 - **4 layouts:** stat tiles, one line, minimal, two rows. Simple or Detailed mode.
 - **Red alert** at 90%. At 100% the cat naps and the bar turns into a lock with the time until your limit resets.
-- **Smart alerts:** a notification at 75%, 90%, 100%, and when your limit resets
+- **Smart alerts:** a message inside Claude Code at 75%, 90%, 100%, and when your limit resets
 - **Today's stats** in the big cat pane: replies, tools, and peak usage
 
 ## Install
@@ -44,7 +44,9 @@ catbar makes no network requests and sends nothing off your machine.
 
 - **What it reads:** your plan's usage figures (5-hour and weekly limits, reset times), how full the chat context is, the session's cost and model name, and how many tools ran. All of it comes from Claude Code's own session figures (`$.session.usage()`, `$.session.model()`, and the `session.measure` and `tool.call` events). It never reads your messages, files, or credentials.
 - **What it stores:** your settings, today's counts (replies, tools, peak usage), and the strip's width in columns, in Claude Code's plugin store on your machine (`$.store`).
-- **What it sends:** only on-screen notifications. With Smart alerts on, it shows a notification through Claude Code (`$.ui.notify`, falling back to an in-app toast) at 75%, 90%, 100%, and when your limit resets. The notification goes to your own computer's notification center and nowhere else. Turn it off in settings under Alerts.
+- **What it sends:** nothing. Smart alerts are short messages shown inside Claude Code (`$.ui.toast`) at 75%, 90%, 100%, and when your limit resets. Turn them off in settings under Alerts.
+- **The only URL in the code** is `http://www.w3.org/2000/svg`, the standard SVG namespace that every SVG drawing declares. It is a fixed name, not a server: catbar never connects to it.
+- **Its hooks** on prompt submits and tool calls only note when a reply starts and count tools; they never read prompt text or tool input.
 
 ## Updating
 

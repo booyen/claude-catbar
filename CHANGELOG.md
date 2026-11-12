@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3
+
+- Smart alerts now show inside Claude Code instead of as system notifications, so nothing leaves the plugin
+- The SVG namespace is declared once, and the README explains it is not a server
+
 ## 1.0.2
 
 - Fixed a directory check: no variable shares a name with the JSX helper `h`
