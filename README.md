@@ -2,6 +2,8 @@
 
 A dancing cat and a usage meter that sit right above your Claude Code chat.
 
+![catbar above the Claude Code chat: a gray cat beside tiles for 5-hour usage, weekly usage, context, and reply time](docs/screenshot.png)
+
 - **18 characters:** 8 cats (gray kitty, ginger, ghost, cool cat, black cat, siamese, white striped, orange in sunglasses), 9 space cats, and a songkok cat in baju Melayu
 - **Moods:** chill, vibe, headbang, spin, shuffle, play with yarn, and nap. Pick one, or let it change on its own. Click the cat to switch.
 - **Vibe:** Relaxed (slow, gentle), Normal, or Party
