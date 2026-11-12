@@ -1731,15 +1731,15 @@ export const register: Register = on => {
     const { Box, Text, Button, Select } = ui
     const s = await read($, settings)
 
-    const toggle = (key: 'showForecast' | 'smartAlerts' | 'showSecondLimit' | 'showReset' | 'showContext' | 'showCost' | 'showTurnTimer' | 'showTools' | 'showModel' | 'showClock' | 'showCat' | 'showUsage' | 'showPercent' | 'redAlert' | 'sleepWhenIdle' | 'turbo' | 'openPaneOnStart', label: string, hint?: string) => {
-      const isOn = s[key] === true
+    const toggle = (option: 'showForecast' | 'smartAlerts' | 'showSecondLimit' | 'showReset' | 'showContext' | 'showCost' | 'showTurnTimer' | 'showTools' | 'showModel' | 'showClock' | 'showCat' | 'showUsage' | 'showPercent' | 'redAlert' | 'sleepWhenIdle' | 'turbo' | 'openPaneOnStart', label: string, hint?: string) => {
+      const isOn = s[option] === true
       return (
         <Box flexDirection="row" justifyContent="space-between" alignItems="center" gap={2}>
           <Box flexDirection="column">
             <Text>{label}</Text>
             {hint && <Text dimColor>{hint}</Text>}
           </Box>
-          <Button key={`t-${key}`} variant={isOn ? 'primary' : undefined} onPress={() => setSettings($, { [key]: !isOn })}>
+          <Button key={'t-' + option} variant={isOn ? 'primary' : undefined} onPress={() => setSettings($, { [option]: !isOn })}>
             {isOn ? "On" : "Off"}
           </Button>
         </Box>

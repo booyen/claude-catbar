@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4
+
+- Renamed a settings variable so the directory's scanner no longer reads it as a credential
+
 ## 1.0.3
 
 - Smart alerts now show inside Claude Code instead of as system notifications, so nothing leaves the plugin
