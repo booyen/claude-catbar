@@ -1,0 +1,14 @@
+{
+  "name": "catbar",
+  "owner": {
+    "name": "booyen"
+  },
+  "description": "A dancing cat and a usage meter above your Claude Code chat.",
+  "plugins": [
+    {
+      "name": "catbar",
+      "source": "./",
+      "description": "A dancing cat and a usage meter above your Claude Code chat."
+    }
+  ]
+}

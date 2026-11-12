@@ -1,0 +1,12 @@
+{
+  "name": "catbar",
+  "version": "1.0.0",
+  "description": "A dancing cat and a usage meter above your Claude Code chat: 18 characters, 7 bar styles, live 5-hour and weekly limits, forecasts, smart alerts, and a cat that naps when you hit 100%.",
+  "author": {
+    "name": "booyen"
+  },
+  "homepage": "https://github.com/booyen/claude-catbar",
+  "repository": "https://github.com/booyen/claude-catbar",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
