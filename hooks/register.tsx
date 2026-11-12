@@ -43,7 +43,7 @@ const DEFAULTS: CatSettings = {
   barLength: 'fill',
   sleepWhenIdle: true,
   turbo: true,
-  openPaneOnStart: true,
+  openPaneOnStart: false,
   showSecondLimit: true,
   showReset: true,
   showContext: true,

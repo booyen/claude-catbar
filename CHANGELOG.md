@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- The big cat pane no longer opens by itself when a session starts. Type `/cat` to open it, or turn on "Open the big cat pane on start" in settings.
+
 ## 1.0.0
 
 First public release.
