@@ -38,7 +38,13 @@ In the Claude desktop app: click **+** next to the prompt box, then **Plugins**,
 - Click **⚙** on the strip, or type `/cat-settings`, to change the character, mood, vibe, bar style, layout, and what the bar shows.
 - `/cat` opens the big cat pane beside the chat. `/cat-band` hides or shows the strip.
 
-The usage figures are your Claude plan's limits, read from Claude Code itself. Nothing is sent anywhere; settings stay on your machine.
+## Privacy
+
+catbar makes no network requests and sends nothing off your machine.
+
+- **What it reads:** your plan's usage figures (5-hour and weekly limits, reset times), how full the chat context is, the session's cost and model name, and how many tools ran. All of it comes from Claude Code's own session figures (`$.session.usage()`, `$.session.model()`, and the `session.measure` and `tool.call` events). It never reads your messages, files, or credentials.
+- **What it stores:** your settings, today's counts (replies, tools, peak usage), and the strip's width in columns, in Claude Code's plugin store on your machine (`$.store`).
+- **What it sends:** only on-screen notifications. With Smart alerts on, it shows a notification through Claude Code (`$.ui.notify`, falling back to an in-app toast) at 75%, 90%, 100%, and when your limit resets. The notification goes to your own computer's notification center and nowhere else. Turn it off in settings under Alerts.
 
 ## Updating
 

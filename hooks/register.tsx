@@ -1055,7 +1055,7 @@ const BARS: Record<BarStyle, { label: string; draw: (p: number, w: number, theme
 
 type Tile = { key: string; label: string; value: string; bar?: BarArt; valueColor?: string }
 
-const TILE = { pad: 12, gap: 8, h: 54, radius: 10, labelSize: 12, valueSize: 15 }
+const TILE = { pad: 12, gap: 8, height: 54, radius: 10, labelSize: 12, valueSize: 15 }
 const textW = (text: string, size: number) => Math.ceil(text.length * size * 0.62)
 const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
@@ -1093,15 +1093,15 @@ function tilesSvg(tiles: Tile[], fillTo?: number, redraw?: (width: number) => Ba
     } else {
       line = `<text x="${x + TILE.pad}" y="${lineY + 5}" class="v"${t.valueColor ? ` style="fill:${t.valueColor}"` : ''}>${esc(t.value)}</text>`
     }
-    parts.push(`<g class="tile"><rect class="bg" x="${x}" y="0" width="${w}" height="${TILE.h}" rx="${TILE.radius}"/>
+    parts.push(`<g class="tile"><rect class="bg" x="${x}" y="0" width="${w}" height="${TILE.height}" rx="${TILE.radius}"/>
 <text x="${x + TILE.pad}" y="20" class="l">${esc(t.label)}</text>${line}</g>`)
     x += w + TILE.gap
   })
   const width = Math.max(1, x - TILE.gap)
   return {
     width,
-    height: TILE.h,
-    source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${TILE.h}" width="${width}" height="${TILE.h}">
+    height: TILE.height,
+    source: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${TILE.height}" width="${width}" height="${TILE.height}">
 <style>
   text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
   .tile .bg { fill: rgba(255,255,255,0.06); }
@@ -1177,9 +1177,9 @@ const SHORT: Record<string, string> = { five_hour: '5h', seven_day: 'week', spen
 /** 1h 42m, 3d 4h, 12m, 40s. */
 function span(ms: number): string {
   const sec = Math.max(0, Math.round(ms / 1000))
-  const d = Math.floor(sec / 86400), h = Math.floor((sec % 86400) / 3600), m = Math.floor((sec % 3600) / 60)
-  if (d > 0) return `${d}d ${h}h`
-  if (h > 0) return `${h}h ${m}m`
+  const d = Math.floor(sec / 86400), hrs = Math.floor((sec % 86400) / 3600), m = Math.floor((sec % 3600) / 60)
+  if (d > 0) return `${d}d ${hrs}h`
+  if (hrs > 0) return `${hrs}h ${m}m`
   if (m > 0) return `${m}m`
   return `${sec}s`
 }
@@ -1187,9 +1187,9 @@ function span(ms: number): string {
 /** 0:42, 12:05, 1:02:09. */
 function stopwatch(ms: number): string {
   const sec = Math.max(0, Math.floor(ms / 1000))
-  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), x = sec % 60
-  const mm = h > 0 ? String(m).padStart(2, '0') : String(m)
-  return `${h > 0 ? `${h}:` : ''}${mm}:${String(x).padStart(2, '0')}`
+  const hrs = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), x = sec % 60
+  const mm = hrs > 0 ? String(m).padStart(2, '0') : String(m)
+  return `${hrs > 0 ? `${hrs}:` : ''}${mm}:${String(x).padStart(2, '0')}`
 }
 
 /** claude-opus-5-5[1m] → Opus 5.5 */
@@ -1203,8 +1203,8 @@ function prettyModel(id: string): string {
 
 function clockText(ms: number): string {
   const t = new Date(ms)
-  const h = t.getHours(), mi = String(t.getMinutes()).padStart(2, '0')
-  return `${((h + 11) % 12) + 1}:${mi} ${h < 12 ? 'AM' : 'PM'}`
+  const hrs = t.getHours(), mi = String(t.getMinutes()).padStart(2, '0')
+  return `${((hrs + 11) % 12) + 1}:${mi} ${hrs < 12 ? 'AM' : 'PM'}`
 }
 
 const WINDOW_MS: Record<string, number> = { five_hour: 5 * 3600_000, seven_day: 7 * 86400_000 }
@@ -1371,7 +1371,7 @@ export const register: Register = on => {
     const main = e.rateLimits.find(r => r.kind === s.usageSource)
     if (main) {
       const t = await $.clock.now()
-      await update($, history, h => [...h.filter(x => t - x.t <= 3 * 3600_000 && x.p <= main.percentUsed), { t, p: main.percentUsed }].slice(-200)).catch(() => {})
+      await update($, history, list => [...list.filter(x => t - x.t <= 3 * 3600_000 && x.p <= main.percentUsed), { t, p: main.percentUsed }].slice(-200)).catch(() => {})
       await bumpToday($, d => ({ ...d, peak: Math.max(d.peak, main.percentUsed) })).catch(() => {})
     }
     if (s.smartAlerts) for (const r of e.rateLimits) await smartAlert($, r.kind, r.percentUsed).catch(() => {})

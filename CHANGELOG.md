@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+- Fixed a directory check: no variable shares a name with the JSX helper `h`
+- Added a Privacy section to the README
+- Added a plugin icon
+
 ## 1.0.1
 
 - The big cat pane no longer opens by itself when a session starts. Type `/cat` to open it, or turn on "Open the big cat pane on start" in settings.
